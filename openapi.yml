@@ -1,0 +1,34 @@
+openapi: 3.1.0
+info:
+  title: Post Notification API
+  version: 1.0.0
+  description: API to post meeting notifications using meetingId and meetingTime.
+servers:
+  - url: https://postapi-gyhvf5bhajh9c9h3.centralindia-01.azurewebsites.net
+paths:
+  /postNotif:
+    post:
+      summary: Send a meeting notification
+      operationId: PostNotif
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                meetingId:
+                  type: string
+                  description: The unique identifier for the meeting
+                meetingTime:
+                  type: string
+                  format: date-time
+                  description: The scheduled time of the meeting
+              required:
+                - meetingId
+                - meetingTime
+      responses:
+        '200':
+          description: Notification posted successfully
+        '400':
+          description: Invalid input
