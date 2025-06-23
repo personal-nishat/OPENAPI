@@ -1,8 +1,8 @@
-openapi: 3.0.1
+openapi: 3.0.4
 info:
-  title: Post Notification API
+  title: Post Notification API - Subset
   description: API for posting meeting notifications by providing meetingId and meetingTime.
-  version: "1.0.0"
+  version: 1.0.0
 servers:
   - url: https://app-pushnotifdotnet.azurewebsites.net
 paths:
@@ -11,10 +11,12 @@ paths:
       summary: Send meeting details to the notification service
       operationId: postMeetingDetails
       requestBody:
-        required: true
         content:
           application/json:
             schema:
+              required:
+                - meetingId
+                - meetingTime
               type: object
               properties:
                 meetingId:
@@ -22,11 +24,9 @@ paths:
                   description: The unique identifier or subject of the meeting.
                 meetingTime:
                   type: string
-                  format: date-time
                   description: The scheduled time of the meeting in ISO 8601 format.
-              required:
-                - meetingId
-                - meetingTime
+                  format: date-time
+        required: true
       responses:
         '200':
           description: Notification sent successfully
@@ -38,24 +38,28 @@ paths:
                   message:
                     type: string
                     description: Confirmation message
-        '400':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: Error message
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: Error message
-components: {}
+  /noneResponse:
+    post:
+      summary: Send meeting details to the noneResponse endpoint
+      operationId: noResponse
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - meetingId
+                - meetingTime
+              type: object
+              properties:
+                meetingId:
+                  type: string
+                  description: The unique identifier or subject of the meeting.
+                meetingTime:
+                  type: string
+                  description: The scheduled time of the meeting in ISO 8601 format.
+                  format: date-time
+        required: true
+      responses:
+        '200':
+          description: Request processed successfully (no response body)
+components: { }
